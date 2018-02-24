@@ -45,8 +45,7 @@ example:
 
 This is the entire contents of example.py. It's just a simple writer that prints each dataframe in turn.
 
-`def run(OutputName, dfList):
-
+`
     # Listify if needed
     if not isinstance(dfList, list):
         dfList = [dfList]
@@ -61,3 +60,6 @@ so you could use the command:
 to make your "output" into printing each dataframe to screen in turn.
 
 what the scripts actually do is at the authors discretion (you should be able to get to any strcuture from pandas), but just be aware there is no return. Whatever and however you output the data its a one-way process.
+
+I've included example.py in the structures directory as a starting point.
+
