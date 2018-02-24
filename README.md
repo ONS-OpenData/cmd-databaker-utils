@@ -10,7 +10,7 @@ you -MUST- be using the ConversionSegment().topandas() functionality for this to
 
 ## install
 
-You MUST first have databaker and all it's dependancies installed.
+You MUST first have databaker and all it's dependancies installed, then:
 
 `pip install git+https://github.com/ONS-OpenData/databakerUtils.git`
 
