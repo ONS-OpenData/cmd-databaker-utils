@@ -19,7 +19,7 @@ You MUST first have databaker and all it's dependancies installed.
 
 import with:
 
-`from databakerUtils import customWriter`
+`from databakerUtils.writers import customWriter`
 
 
 then replace the line:
