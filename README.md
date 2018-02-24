@@ -45,13 +45,17 @@ example:
 
 This is the entire contents of example.py. It's just a simple writer that prints each dataframe in turn.
 
-`
+```
+def run(OutputName, dfList):
+
     # Listify if needed
     if not isinstance(dfList, list):
         dfList = [dfList]
 
     for dataframe in dfList:
-      print(dataframe)`
+      print(dataframe)
+
+```
 
 so you could use the command:
 
