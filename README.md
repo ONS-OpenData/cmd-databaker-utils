@@ -12,7 +12,7 @@ you -MUST- be using the ConversionSegment().topandas() functionality for this to
 
 You MUST first have databaker and all it's dependancies installed.
 
-`pip3 install databakerUtils`
+`pip3 install databakerUtils`   NOTE - not implemented yet!
 
 
 ## Usage (csvWriter)
@@ -45,7 +45,12 @@ example:
 
 ..with this file called example.py in structures
 
-`def run(OutputName, dfList):
+`
+def run(OutputName, dfList):
+
+    # Listify if needed
+    if not isinstance(dfList, list):
+        dfList = [dfList]
 
     for dataframe in dfList:
       print(dataframe)
