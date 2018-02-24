@@ -35,7 +35,7 @@ where "v4" is the output structure you want.
 
 ## Adding additional output structures
 
-Iv'e initially only added the v4 structure used by cmd. We can add more as follows.
+Iv'e initially only added the v4 structure used by cmd and a simple example named example.py. We can add more as follows.
 
 Add a new .py file with a single function to the /structures directory. This file must contain one function called run that takes the name of the file to be output and variable representing a list of pandas dataframes.
 
@@ -43,7 +43,7 @@ The name of the file is the parameter by which you specify that output structure
 
 example:
 
-..with this file called example.py in structures
+This is the entire contents of example.py. It's just a simple writer that prints each dataframe in turn.
 
 `
 def run(OutputName, dfList):
@@ -56,10 +56,10 @@ def run(OutputName, dfList):
       print(dataframe)
 `
 
-you could use the command:
+so you could use the command:
 
 `customWriter("Output.csv", conversionsegments, "example")`
 
-to make your "output" functionality into printing each dataframe to screen in turn.
+to make your "output" into printing each dataframe to screen in turn.
 
 what the scripts actually do is at the authors discretion (you should be able to get to any strcuture from pandas), but just be aware there is no return. Whatever and however you output the data its a one-way process.
