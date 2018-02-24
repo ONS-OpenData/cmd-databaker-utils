@@ -10,4 +10,5 @@ setup(
   download_url = 'https://github.com/ONS-OpenData/databakerUtils/archive/0.1.tar.gz',
   keywords = ['databaker', 'addon', 'utility'],
   classifiers = [],
+  include structures/*.py
 )
