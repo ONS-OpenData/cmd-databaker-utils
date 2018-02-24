@@ -12,7 +12,7 @@ you -MUST- be using the ConversionSegment().topandas() functionality for this to
 
 You MUST first have databaker and all it's dependancies installed.
 
-`pip3 install databakerUtils`   NOTE - not implemented yet!
+`pip install git+https://github.com/ONS-OpenData/databakerUtils.git`
 
 
 ## Usage (csvWriter)
