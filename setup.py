@@ -2,7 +2,7 @@ from setuptools import setup, find_packages
 
 setup(
   name = 'databakerUtils',
-  packages=find_packages()
+  packages=find_packages(),
   version = '0.1',
   description = 'Some additional utilities for using databaker within ONS digital publishing',
   author = 'Michael Adams',
