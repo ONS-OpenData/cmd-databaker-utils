@@ -1,8 +1,7 @@
-from setuptools import setup, find_packages
-
+from distutils.core import setup
 setup(
   name = 'databakerUtils',
-  packages=find_packages(),
+  packages = ['databakerUtils'],
   version = '0.1',
   description = 'Some additional utilities for using databaker within ONS digital publishing',
   author = 'Michael Adams',
