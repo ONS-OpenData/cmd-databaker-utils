@@ -1,3 +1,6 @@
+
+NOT usable via install yet. Chipping away at this.
+
 # databakerUtils
 
 Library of databaker add-on functionality. The intention to move away from ad-hoc branches and local-only scripts
