@@ -32,15 +32,15 @@ then replace the line:
 
 `writetechnicalCSV("Output.csv", conversionsegments)`
 
+
 with:
 
 `v4Writer("Output.csv", conversionsegments)`
 
-where "v4" is the output structure you want.
 
 you can also use the asFrame keyword to write the v4 to a new dataframe if further processing is required).
 
-`v4Writer("Output.csv", conversionsegments, asFrame=True)`
+`myNewDataFrame = v4Writer("Output.csv", conversionsegments, asFrame=True)`
 
 
 
