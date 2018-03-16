@@ -20,7 +20,7 @@ Depends on functionality. Listed below.
 
 Used to output a databaker generated pandas dataframe to a v4 structured csv. 
 
-you -MUST- be using the ConversionSegment().topandas() functionality for this to work.
+you -MUST- be using the ConversionSegment().topandas() functionality for this to work. And if conversionSegments is a list you need need to concanate to a single dataframe first, i.e `conversionSegments = pd.concat([conversionSegments])`
 
 
 import with:
