@@ -51,7 +51,7 @@ def v4Writer(OutputName, df, asFrame=False):
     # Geography
     newDf["Geography_codelist"] = df["GEOG"]
     newDf["Geography"] = ''
-    df = df.drop("geography", axis=1)
+    df = df.drop("GEOG", axis=1)
 
     for topic in df.columns.values:
         newDf[topic + '_codelist'] = ''
