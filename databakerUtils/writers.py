@@ -1,60 +1,62 @@
 import pandas as pd
-import os
-import importlib.util
 
 """
-Allows the importing of a specified script from /structures for restructurng the databaker output csv.
-This is setup to import dynamically, so we only import what we need (so we can have as many output-structures as we want).
+A sequence of pandas instructions to turn a pandas dataframe created by databaker
+into a CSV strutured to the ONS digital publishing v4 specification.
+
+We're going to drop old columns as we add new ones, to minimise memory footprint.
 """
 
-# Wrapper
-def customWriter(OutputName, data, selectedWriter):
+def v4Writer(OutputName, df):
 
-    # build a writer with an appropriately imported method
-    writer = allWriters(OutputName, data, selectedWriter)
+    print('Extracting data structured as v4.')
 
-    # import it
-    writer.importWriter()
+    obsLevelData = ['Confidence Interval', 'CV', 'CDID']
 
+    # additional column count
+    addColCount = len([x for x in df.columns.values if x in obsLevelData])
 
+    # TODO - unlikely to be efficient. We should already know.
+    hasDataMarker = False
+    if len(df['DATAMARKING'].unique()) > 1:
+        addColCount += 1
+        hasDataMarker = True
+    else:
+        df = df.drop('DATAMARKING', axis=1)
 
-# principle class, used to police input and create appropriate writer
-class allWriters(object):
+    # Lets build our new dataframe
+    newDf = pd.DataFrame()
+    newDf['V4_' + str(addColCount)] = df['OBS']
+    df = df.drop('OBS', axis=1)
 
-    def __init__(self, outputName, dataframesIn, selectedWriter):
+    if hasDataMarker:
+        newDf['Data_Marking'] = df['DATAMARKING']
+        df = df.drop('DATAMARKING', axis=1)
 
-        # Listify dataframes_in if there's only one ConversionSegment
-        if type(dataframesIn) != list:
-            dataframesIn = [dataframesIn]
+    # Add quality measures
+    # iterate and look for column headers to output prior to time
+    for qm in obsLevelData:
+        if qm in df.columns.values:
+            newDf[qm] = df[qm]
+            df = df.drop(qm, axis=1)
 
+    # time unit
+    newDf['Time_codelist'] = df['TIMEUNIT']
+    df = df.drop('TIMEUNIT', axis=1)
 
-        # Make sure we're only being passed pandas dataframes
-        for df in dataframesIn:
-            if type(df) != pd.DataFrame:
-                raise ValueError("Input to Writer must always be pandas dataframes.")
+    # time
+    newDf['Time'] = df['TIME']
+    df = df.drop('TIME', axis=1)
 
-        # Concatentate those dataframes
-        dflist = pd.concat(dataframesIn)
+    # Geography
+    newDf["Geography_codelist"] = df["geography"]
+    newDf["Geography"] = ''
+    df = df.drop("geography", axis=1)
 
-        # Create a list of output structures for each .py script in /structures.
-        files = [f for f in os.listdir('structures/.')]
+    for topic in df.columns.values:
+        newDf[topic + '_codelist'] = ''
+        newDf[topic] = df[topic]
 
-        # Make sure they're asking for a writer that actually exists
-        if selectedWriter not in [x[:-3] for x in files]:
-            raise ValueError("Output format {of} not present. Have only got: ".format(of=selectedWriter), ",".join([f[:-3] for f in files]))
-
-        # Store everything ready to run
-        self.selectedWriter = selectedWriter
-        self.outputName = outputName
-        self.dflist = dflist
-
-
-    # Import whatever the chosen writer was
-    def importWriter(self):
-
-        print("Importing Writer:", self.selectedWriter)
-        spec = importlib.util.spec_from_file_location(self.selectedWriter, "structures/{file}.py".format(file=self.selectedWriter))
-        run = importlib.util.module_from_spec(spec)
-        spec.loader.exec_module(run)
-        run.run(self.outputName, self.dflist)
+    newDf.to_csv(OutputName, encoding='utf-8', index=False)
+    print('V4 file created.')
 
