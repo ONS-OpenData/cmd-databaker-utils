@@ -49,7 +49,7 @@ def v4Writer(OutputName, df, asFrame=False):
     df = df.drop('TIME', axis=1)
 
     # Geography
-    newDf["Geography_codelist"] = df["geography"]
+    newDf["Geography_codelist"] = df["GEOG"]
     newDf["Geography"] = ''
     df = df.drop("geography", axis=1)
 
