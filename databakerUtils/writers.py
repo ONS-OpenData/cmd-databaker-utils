@@ -16,13 +16,10 @@ def v4Writer(OutputName, df, asFrame=False):
     # additional column count
     addColCount = len([x for x in df.columns.values if x in obsLevelData])
 
-    # TODO - unlikely to be efficient. We should already know.
-    hasDataMarker = False
-    if len(df['DATAMARKER'].unique()) > 1:
-        addColCount += 1
+    if "DATMARKER" in df.columns.values:
         hasDataMarker = True
     else:
-        df = df.drop('DATAMARKER', axis=1)
+        hasDataMarker = False
 
     # Lets build our new dataframe
     newDf = pd.DataFrame()
