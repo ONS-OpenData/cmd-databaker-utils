@@ -40,7 +40,7 @@ with:
 
 you can also use the asFrame keyword to write the v4 to a new dataframe if further processing is required).
 
-`myNewDataFrame = v4Writer("Output.csv", conversionsegments, asFrame=True)`
+`myNewDataFrame = v4Writer("Output.csv", conversionSegments, asFrame=True)`
 
 
 
