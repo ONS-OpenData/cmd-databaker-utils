@@ -30,12 +30,12 @@ import with:
 
 then replace the line:
 
-`writetechnicalCSV("Output.csv", conversionsegments)`
+`writetechnicalCSV("Output.csv", conversionSegments)`
 
 
 with:
 
-`v4Writer("Output.csv", conversionsegments)`
+`v4Writer("Output.csv", conversionSegments)`
 
 
 you can also use the asFrame keyword to write the v4 to a new dataframe if further processing is required).
