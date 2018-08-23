@@ -61,7 +61,7 @@ import with:
 
 use within a python script with:
 
-codeListsAsCypherFromV4(<pathTOCSV>)
+`codeListsAsCypherFromV4(<pathTOCSV>)`
 
 
 
