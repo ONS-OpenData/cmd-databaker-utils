@@ -16,7 +16,7 @@ Depends on functionality. Listed below.
 
 ---
 
-## Utility - V4Writer
+## Utility - Create V4 files
 
 Used to output a databaker generated pandas dataframe to a v4 structured csv. 
 
@@ -43,6 +43,25 @@ you can also use the asFrame keyword to write the v4 to a new dataframe if furth
 `myNewDataFrame = v4Writer("Output.csv", conversionSegments, asFrame=True)`
 
 
+---
+
+### Utility - Create Neo4J Graph Codelists from V4 files
+
+Used to generate .cypher files for loading codelists into a Neo4J graph database.
+
+When ran on a v4 style csv it will generated a cypher file for each dimension in that v4 file.
+
+IMPORTANT  - there's no automatic checking against the API so it will create ALL codelists, even ones that
+already exist with the graph (if unsure, use the cmd api to see if a codelist already exist: https://api.beta.ons.gov.uk/v1/code-lists).
+
+
+import with:
+
+`from databakerUtils.writers import codeListsAsCypherFromV4`
+
+use within a python script with:
+
+codeListsAsCypherFromV4(<pathTOCSV>)
 
 
 
