@@ -12,7 +12,7 @@ def getCodeListNamesFromV4(df):
         vNum = vHeader[0].split("_")[1].strip()
 
     colsList = []
-    for i in range(int(vNum) + 1, len(cols), 2):
+    for i in range(int(vNum), len(cols), 2):
         codeAndLabel = {"code": cols[i], "label": cols[i + 1]}
         colsList.append(codeAndLabel)
 
