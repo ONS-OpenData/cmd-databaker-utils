@@ -6,7 +6,10 @@ Library of ONS centric add-on functionality for databaker.
 
 ## install
 
-You MUST first have databaker and all it's dependancies installed, then:
+You MUST first have databaker and all it's dependancies installed.
+YOU MUST have git access (so have installed Git for Windows and be using the GIT command line) if you're on a windows machine.
+
+then:
 
 `pip install git+https://github.com/ONS-OpenData/cmd-databaker-utils.git`
 
