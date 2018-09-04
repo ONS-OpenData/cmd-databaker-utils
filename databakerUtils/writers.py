@@ -16,7 +16,7 @@ def v4Writer(OutputName, df, asFrame=False):
     # additional column count
     addColCount = len([x for x in df.columns.values if x in obsLevelData])
 
-    if "DATMARKER" in df.columns.values:
+    if "DATAMARKER" in df.columns.values:
         hasDataMarker = True
     else:
         hasDataMarker = False
