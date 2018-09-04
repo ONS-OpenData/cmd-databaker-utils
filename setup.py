@@ -7,7 +7,7 @@ setup(
   author = 'Michael Adams',
   author_email = 'michael.adams@ons.gov.uk',
   url = 'https://github.com/ONS-OpenData/databakerUtils',
-  download_url = 'https://github.com/ONS-OpenData/databakerUtils/archive/0.1.tar.gz',
+  download_url = 'https://github.com/ONS-OpenData/cmd-databaker-utils/archive/0.1.tar.gz',
   keywords = ['databaker', 'addon', 'utility'],
   classifiers = [],
 )
