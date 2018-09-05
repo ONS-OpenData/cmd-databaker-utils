@@ -84,7 +84,13 @@ def duplicates(df):
     for code in df[codeCol].unique():
 
         tempDf = df.copy()
-        tempDf = tempDf[tempDf[codeCol] == code]
+
+        # TODO - must be a less hacky way of handling this
+        try:
+            tempDf = tempDf[tempDf[codeCol] == code]
+        except:
+            tempDf = tempDf[tempDf[codeCol] == str(code)]
+
         if len(tempDf) > 1:
             for label in tempDf[labelsCol]:
                 hasNonSpecificCodes.append(str(code) + " || " + str(label) + "\n")
