@@ -67,4 +67,22 @@ use within a python script with:
 `codelistsAsCypherFromV4(<pathTOCSV>)`
 
 
+---
 
+## Utility - Codelist API
+
+Some helper functions for working with codes and codelists that already exist on the api
+
+import with:
+
+`from databakerUtils.api import getAllCodes, getAllLabels, getCodeLookup, getLabelLookup  # Or any one of these four`
+
+uses:
+
+* `data = getAllCodes(<URL>)`
+* `data = getAllLabels(<URL>)`
+* `data = getCodeLookup(<URL>)`
+* `data = getLabelLookup(<URL>)`
+
+NOTE - <URL> in this context is a code-list api endpoint ending in /codes.
+example: https://api.beta.ons.gov.uk/v1/code-lists/cpi1dim1aggid/editions/one-off/codes
