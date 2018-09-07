@@ -75,7 +75,7 @@ Some helper functions for working with codes and codelists that already exist on
 
 import with:
 
-`from databakerUtils.api import getAllCodes, getAllLabels, getCodeLookup, getLabelLookup  # Or any one of these four`
+`from databakerUtils.api import getAllCodes, getAllLabels, getCodeLookup, getLabelLookup`
 
 uses:
 
@@ -84,5 +84,5 @@ uses:
 * `data = getCodeLookup(<URL>)`
 * `data = getLabelLookup(<URL>)`
 
-NOTE - <URL> in this context is a code-list api endpoint ending in /codes.
+A <URL> in this context is a code-list api endpoint ending in /codes.
 example: https://api.beta.ons.gov.uk/v1/code-lists/cpi1dim1aggid/editions/one-off/codes
