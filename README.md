@@ -60,7 +60,7 @@ already exist with the graph (if unsure, use the cmd api to see if a codelist al
 
 import with:
 
-`from databakerUtils.writers import codeListsAsCypherFromV4`
+`from databakerUtils.neo4j import codelistsAsCypherFromV4`
 
 use within a python script with:
 
