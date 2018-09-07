@@ -81,10 +81,10 @@ import with:
 
 uses:
 
-* `data = getAllCodes(<URL>)`
-* `data = getAllLabels(<URL>)`
-* `data = getCodeLookup(<URL>)`
-* `data = getLabelLookup(<URL>)`
+* `data = getAllCodes(<URL>)`         # returns a list
+* `data = getAllLabels(<URL>)`        # returns a list
+* `data = getCodeLookup(<URL>)`       # returns a dictionary
+* `data = getLabelLookup(<URL>)`      # returns a dictionary
 
 A <URL> in this context is a code-list api endpoint ending in /codes.
 example: https://api.beta.ons.gov.uk/v1/code-lists/cpi1dim1aggid/editions/one-off/codes
