@@ -12,6 +12,7 @@ YOU MUST have git access (so have installed Git for Windows and be using the GIT
 then:
 
 `pip install git+https://github.com/ONS-OpenData/cmd-databaker-utils.git`
+`pip install requests`
 
 ## Usage
 
