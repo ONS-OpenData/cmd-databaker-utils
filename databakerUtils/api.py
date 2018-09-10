@@ -94,18 +94,22 @@ def getEditionSpecificCodelists(allCl):
     allClDictList = []
     for cl in allCl:
 
-        r = getResponse(cl + "/editions")
-        data = unpackJson(r)
+        try:
+            r = getResponse(cl + "/editions")
+            data = unpackJson(r)
 
-        # we need to create a lookup for each edition specific codelist
-        for item in data["items"]:
-            itemDict = {
-                "url": item["links"]["codes"]["href"],
-                "edition": item["links"]["self"]["id"],
-                "label": item["label"]
-            }
+            # we need to create a lookup for each edition specific codelist
+            for item in data["items"]:
+                itemDict = {
+                    "url": item["links"]["codes"]["href"],
+                    "edition": item["links"]["self"]["id"],
+                    "label": item["label"]
+                }
 
-            allClDictList.append(itemDict)
+                allClDictList.append(itemDict)
+
+        except Exception:
+            print("Request failing. Does this codelist exist and can it be reached?", cl + "/editions")
 
     return allClDictList
 
