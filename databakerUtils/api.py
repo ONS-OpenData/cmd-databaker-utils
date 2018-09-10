@@ -120,7 +120,7 @@ def getEditionSpecificCodelists(allCl):
 
 
 #
-def findCodelists(dictOfItemLists, useDev=True):
+def findCodelists(dictOfItemLists, useDev=False):
     # police input
     if type(dictOfItemLists) != dict:
         raise ValueError("Aborting. The findCodelists function requires a dictionary.")
