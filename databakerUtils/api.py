@@ -71,7 +71,15 @@ def getLabelLookup(url):
 # returns a dictionary of {url:id} for all codelists on the code list API
 # we're using the url for key as codelist are versioned but their names are not
 def getCodeListDict():
-    r = getResponse("https://api.beta.ons.gov.uk/v1/code-lists")
+
+    try:
+        # always use cmd-dev by preference
+        r = getResponse("https://api.dev.cmd.onsdigital.co.uk/v1/code-lists")
+    except:
+        print("WARNING - cannot access cmd-dev. Using Public Apis.")
+        r = getResponse("https://api.beta.ons.gov.uk/v1/code-lists")
+
+
     data = unpackJson(r)
 
     urlDict = [x["links"]["self"]["href"] for x in data["items"]]
@@ -122,9 +130,6 @@ def findCodelists(dictOfItemLists, removeZeroMatches=True):
     for key in dictOfItemLists.keys():
         allResults.append(findCodelist(key, dictOfItemLists[key], allClDict))
 
-    if removeZeroMatches:
-        allResults = [x for x in allResults if x["bestMatchPerc"] != 0]
-
     return allResults
 
 
@@ -132,7 +137,8 @@ def findCodelists(dictOfItemLists, removeZeroMatches=True):
 def findCodelist(listName, itemList, allCLDict):
     result = {
         "bestMatchPerc": 0,
-        "bestMatchUrl": None
+        "bestMatchUrl": None,
+        "name":listName,
     }
 
     for cl in allCLDict:
