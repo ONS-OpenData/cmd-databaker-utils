@@ -71,7 +71,7 @@ instructions = {
 "code":<NAME OF CODELIST COLUMN>,
 "label":<NAME OF LABEL COLUMN>
 }
-codelistsAsCypherFromV4(instructions)
+codelistCypherFromDimension(instructions)
 
 ```
 
