@@ -77,7 +77,7 @@ Some helper functions for working with codes and codelists that already exist on
 
 import with:
 
-`from databakerUtils.api import getAllCodes, getAllLabels, getCodeLookup, getLabelLookup`
+`from databakerUtils.api import findCodelists, getAllCodes, getAllLabels, getCodeLookup, getLabelLookup`
 
 
 ### Scanning the codelist api:
