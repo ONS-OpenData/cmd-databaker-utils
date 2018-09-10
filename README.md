@@ -96,7 +96,9 @@ checkDict = {
   "geography":list(df["Geography_codelist"].unique()),
   "time":list(df["Time_codelist"].unique())
 }
-results = findCodelists(checkDict)
+results = findCodelistByCodes(checkDict) 
+
+# note - you can also 'findCodelistByLabels'
 
 ```
 
