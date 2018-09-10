@@ -79,7 +79,7 @@ def getLabelLookup(url):
 # we're using the url for key as codelist are versioned but their names are not
 def getCodeListDict(useDev):
 
-    if useDev:
+    if useDev == True:
         r = getResponse("https://api.dev.cmd.onsdigital.co.uk/v1/code-lists")
     else:
         r = getResponse("https://api.beta.ons.gov.uk/v1/code-lists")
