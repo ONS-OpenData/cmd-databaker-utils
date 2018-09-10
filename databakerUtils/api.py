@@ -131,7 +131,7 @@ def findCodelists(dictOfItemLists, useDev=False):
                 "Aborting. The findCodelists fuction required a dictionary of {key:[]}, you did not provide a list.")
 
     # codelists from the cmd-api
-    allCl = getCodeListDict(useDev=useDev)
+    allCl = getCodeListDict(useDev)
     allClDict = getEditionSpecificCodelists(allCl)
 
     allResults = []
@@ -168,3 +168,53 @@ def findCodelist(listName, itemList, allCLDict):
 
     return result
 
+
+# TODO - repeat of the above, refactor and make it DRY
+def findLabels(dictOfItemLists, useDev=False):
+    # police input
+    if type(dictOfItemLists) != dict:
+        raise ValueError("Aborting. The findCodelists function requires a dictionary.")
+
+    for key in dictOfItemLists.keys():
+
+        if type(dictOfItemLists[key]) != list:
+            raise ValueError(
+                "Aborting. The findCodelists fuction required a dictionary of {key:[]}, you did not provide a list.")
+
+    # codelists from the cmd-api
+    allCl = getCodeListDict(useDev)
+    allClDict = getEditionSpecificCodelists(allCl)
+
+    allResults = []
+    for key in dictOfItemLists.keys():
+        allResults.append(findCodelist(key, dictOfItemLists[key], allClDict))
+
+    return allResults
+
+
+# TODO - repeat of the above, refactor and make it DRY
+def findLabel(listName, itemList, allCLDict):
+    result = {
+        "bestMatchPerc": 0,
+        "bestMatchUrl": None,
+        "name":listName,
+    }
+
+    for cl in allCLDict:
+
+        codesFromApi = getAllLabels(cl["url"])
+
+        if codesFromApi != None: # there's not been an error
+
+                matches = len([x for x in itemList if x in codesFromApi])
+
+                percMatch = (100 / len(itemList)) * matches
+
+                if percMatch > result["bestMatchPerc"]:
+                    result["bestMatchPerc"] = percMatch
+                    result["bestMatchUrl"] = cl["url"]
+                    result["name"] = listName
+        else:
+            print("Request failing. Does this codelist exist and can it be reached?", cl["url"])
+
+    return result
