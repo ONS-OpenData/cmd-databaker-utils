@@ -38,10 +38,15 @@ def verifyCorrectEndpoint(url):
 
 # get all codes for a given codelist
 def getAllCodes(url):
-    verifyCorrectEndpoint(url)
-    data = getDataFromSource(url)
 
-    return [x["id"] for x in data["items"]]
+    try:
+        verifyCorrectEndpoint(url)
+        data = getDataFromSource(url)
+
+        return [x["id"] for x in data["items"]]
+
+    except:
+        return None
 
 
 # get all codes for a given codelist
@@ -147,17 +152,19 @@ def findCodelist(listName, itemList, allCLDict):
 
     for cl in allCLDict:
 
-        try:
-            codesFromApi = getAllCodes(cl["url"])
-            matches = len([x for x in itemList if x in codesFromApi])
+        codesFromApi = getAllCodes(cl["url"])
 
-            percMatch = (100 / len(itemList)) * matches
+        if codesFromApi != None: # there's not been an error
 
-            if percMatch > result["bestMatchPerc"]:
-                result["bestMatchPerc"] = percMatch
-                result["bestMatchUrl"] = cl["url"]
-                result["name"] = listName
-        except:
+                matches = len([x for x in itemList if x in codesFromApi])
+
+                percMatch = (100 / len(itemList)) * matches
+
+                if percMatch > result["bestMatchPerc"]:
+                    result["bestMatchPerc"] = percMatch
+                    result["bestMatchUrl"] = cl["url"]
+                    result["name"] = listName
+        else:
             print("Request failing. Does this codelist exist and can it be reached?", cl["url"])
 
     return result
