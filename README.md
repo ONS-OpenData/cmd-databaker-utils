@@ -54,11 +54,7 @@ you can also use the asFrame keyword to write the v4 to a new dataframe if furth
 
 Used to generate .cypher files for loading codelists into a Neo4J graph database.
 
-When ran on a v4 style csv it will generated a cypher file for each dimension in that v4 file.
-
-IMPORTANT  - there's no automatic checking against the API so it will create ALL codelists, even ones that
-already exist with the graph (if unsure, use the cmd api to see if a codelist already exist: https://api.beta.ons.gov.uk/v1/code-lists).
-
+When given the column name for a codelist and its associated labels column, it will generate a cypher file to generate that codelist.
 
 import with:
 
