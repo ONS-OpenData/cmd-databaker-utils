@@ -108,7 +108,7 @@ def getEditionSpecificCodelists(allCl):
 
                 allClDictList.append(itemDict)
 
-        except Exception:
+        except:
             print("Request failing. Does this codelist exist and can it be reached?", cl + "/editions")
 
     return allClDictList
@@ -147,15 +147,18 @@ def findCodelist(listName, itemList, allCLDict):
 
     for cl in allCLDict:
 
-        codesFromApi = getAllCodes(cl["url"])
-        matches = len([x for x in itemList if x in codesFromApi])
+        try:
+            codesFromApi = getAllCodes(cl["url"])
+            matches = len([x for x in itemList if x in codesFromApi])
 
-        percMatch = (100 / len(itemList)) * matches
+            percMatch = (100 / len(itemList)) * matches
 
-        if percMatch > result["bestMatchPerc"]:
-            result["bestMatchPerc"] = percMatch
-            result["bestMatchUrl"] = cl["url"]
-            result["name"] = listName
+            if percMatch > result["bestMatchPerc"]:
+                result["bestMatchPerc"] = percMatch
+                result["bestMatchUrl"] = cl["url"]
+                result["name"] = listName
+        except:
+            print("Request failing. Does this codelist exist and can it be reached?", cl["url"])
 
     return result
 
