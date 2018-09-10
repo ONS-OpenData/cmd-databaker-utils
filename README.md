@@ -62,11 +62,18 @@ already exist with the graph (if unsure, use the cmd api to see if a codelist al
 
 import with:
 
-`from databakerUtils.neo4j import codelistsAsCypherFromV4`
+`from databakerUtils.neo4j import codelistCypherFromDimension`
 
-use within a python script with:
+use within a python script as follows.
 
-`codelistsAsCypherFromV4(<pathTOCSV>)`
+```
+instructions = {
+"code":<NAME OF CODELIST COLUMN>,
+"label":<NAME OF LABEL COLUMN>
+}
+codelistsAsCypherFromV4(instructions)
+
+```
 
 
 ---

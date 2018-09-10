@@ -115,7 +115,9 @@ def duplicates(df):
             f.writelines(hasNonSpecificCodes)
 
 
-# Main function, uses all of the above
+# Wrapper function, uses all of the above
+"""
+has type issues - disabling for now
 def codelistsAsCypherFromV4(csv):
 
     df = pd.read_csv(csv)
@@ -125,4 +127,9 @@ def codelistsAsCypherFromV4(csv):
 
     for dimensionPair in dimensionsPairs:
         codeListFromDimension(dimensionPair, df)
+"""
 
+# Main function, uses all of the above
+# {"code": <CODE_COL_NAME>, "label": <LABEL_COL_NAME>}
+def codelistCypherFromDimension(df, dimensionPair):
+    codeListFromDimension(dimensionPair, df)
