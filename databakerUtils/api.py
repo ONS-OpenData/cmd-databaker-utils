@@ -31,7 +31,7 @@ def getDataFromSource(url):
 
 # verify that the request is for the expected endpoints
 def verifyCorrectEndpoint(url):
-    if "api.beta.ons.gov.uk/" not in url and "api.ons.gov.uk" not in url:
+    if "api.beta.ons.gov.uk/" not in url and "api.ons.gov.uk" not in url and "api.dev.cmd." not in url:
         raise ValueError(
             "Aborting. This function is intended for use with the dp-codelist-api. Urls should end with /codes.")
 
