@@ -82,7 +82,7 @@ import with:
 
 ### Scanning the codelist api:
 
-NOTE - `list(df[" <V4_COL_HEADER> "].unque())` returns a list of unique codes from a dataframe column.
+NOTE - `list(df[" <V4_COL_HEADER> "].unique())` returns a list of unique codes from a dataframe column.
 
 ```
 checkDict = {
