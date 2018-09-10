@@ -119,7 +119,7 @@ def getEditionSpecificCodelists(allCl):
 
 
 #
-def findCodelists(dictOfItemLists, useDev=False):
+def findCodelistByCodes(dictOfItemLists, useDev=False):
     # police input
     if type(dictOfItemLists) != dict:
         raise ValueError("Aborting. The findCodelists function requires a dictionary.")
@@ -170,7 +170,7 @@ def findCodelist(listName, itemList, allCLDict):
 
 
 # TODO - repeat of the above, refactor and make it DRY
-def findLabels(dictOfItemLists, useDev=False):
+def findCodelistByLabels(dictOfItemLists, useDev=False):
     # police input
     if type(dictOfItemLists) != dict:
         raise ValueError("Aborting. The findCodelists function requires a dictionary.")
@@ -187,7 +187,7 @@ def findLabels(dictOfItemLists, useDev=False):
 
     allResults = []
     for key in dictOfItemLists.keys():
-        allResults.append(findCodelist(key, dictOfItemLists[key], allClDict))
+        allResults.append(findLabel(key, dictOfItemLists[key], allClDict))
 
     return allResults
 
