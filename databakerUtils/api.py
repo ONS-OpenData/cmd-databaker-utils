@@ -10,7 +10,9 @@ def getResponse(url):
 
     # 200 is StatusOK, ie the request has worked, see: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
     if r.status_code != 200:
-        raise ValueError("Request failed on {u}. With error code {r}.".format(u=url, r=r.status_code))
+
+        # TODO - proper error handling
+        return None
 
     return r
 
@@ -75,15 +77,13 @@ def getLabelLookup(url):
 
 # returns a dictionary of {url:id} for all codelists on the code list API
 # we're using the url for key as codelist are versioned but their names are not
-def getCodeListDict():
+def getCodeListDict(useDev=False):
 
-    try:
-        # always use cmd-dev by preference
+    if useDev:
         r = getResponse("https://api.dev.cmd.onsdigital.co.uk/v1/code-lists")
-    except:
+    else:
         print("WARNING - cannot access cmd-dev. Using Public Apis.")
         r = getResponse("https://api.beta.ons.gov.uk/v1/code-lists")
-
 
     data = unpackJson(r)
 
@@ -120,7 +120,7 @@ def getEditionSpecificCodelists(allCl):
 
 
 #
-def findCodelists(dictOfItemLists, removeZeroMatches=True):
+def findCodelists(dictOfItemLists, useDev=True):
     # police input
     if type(dictOfItemLists) != dict:
         raise ValueError("Aborting. The findCodelists function requires a dictionary.")
@@ -132,7 +132,7 @@ def findCodelists(dictOfItemLists, removeZeroMatches=True):
                 "Aborting. The findCodelists fuction required a dictionary of {key:[]}, you did not provide a list.")
 
     # codelists from the cmd-api
-    allCl = getCodeListDict()
+    allCl = getCodeListDict(useDev=useDev)
     allClDict = getEditionSpecificCodelists(allCl)
 
     allResults = []
