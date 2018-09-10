@@ -79,7 +79,23 @@ import with:
 
 `from databakerUtils.api import getAllCodes, getAllLabels, getCodeLookup, getLabelLookup`
 
-uses:
+
+### Scanning the codelist api:
+
+NOTE - `list(df[" <V4_COL_HEADER> "].unque())` returns a list of unique codes from a dataframe column.
+
+```
+checkDict = {
+  "geography":list(df["Geography_codelist"].unique()),
+  "time":list(df["Time_codelist"].unique())
+}
+results = findCodelists(checkDict)
+
+```
+
+The result item will contain the best matching codelist from the api, or will be blank (in which case no codes from the api, match any codes in the lists provided".
+
+Additional helper functions:
 
 * `data = getAllCodes(<URL>)`         # returns a list
 * `data = getAllLabels(<URL>)`        # returns a list
