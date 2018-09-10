@@ -10,7 +10,7 @@ def getResponse(url):
 
     # 200 is StatusOK, ie the request has worked, see: https://en.wikipedia.org/wiki/List_of_HTTP_status_codes
     if r.status_code != 200:
-        raise ValueError("Request failed on {u}. With error code {r}.".format(u=url, s=r.status_code))
+        raise ValueError("Request failed on {u}. With error code {r}.".format(u=url, r=r.status_code))
 
     return r
 
