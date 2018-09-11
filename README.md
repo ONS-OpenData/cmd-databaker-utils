@@ -67,7 +67,7 @@ instructions = {
 "code":<NAME OF CODELIST COLUMN>,
 "label":<NAME OF LABEL COLUMN>
 }
-codelistCypherFromDimension(instructions)
+codelistCypherFromDimension(<DATAFRAME>, instructions)
 
 ```
 

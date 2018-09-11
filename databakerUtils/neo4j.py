@@ -1,26 +1,8 @@
 import pandas as pd
 
 
-# get all the codelist column headers from a v4 file
-def getCodeListNamesFromV4(df):
-    cols = df.columns.values
-    vHeader = [x for x in cols if "v4_" in x.lower()]
-
-    if len(vHeader) == 0:
-        raise ValueError("Cannot find v4_ or V4_ header in provided csv.")
-    else:
-        vNum = vHeader[0].split("_")[1].strip()
-
-    colsList = []
-    for i in range(int(vNum)+1, len(cols), 2):
-        codeAndLabel = {"code": cols[i], "label": cols[i + 1]}
-        colsList.append(codeAndLabel)
-
-    return colsList
-
-
 # passes the name of a codelist and a list of unique codes it contains to makeCypher function
-def codeListFromDimension(dimensionsPair, df):
+def codeListFromDimension(df, dimensionsPair):
     temp = pd.DataFrame()
     temp[dimensionsPair["code"]] = df[dimensionsPair["code"]]
     temp[dimensionsPair["label"]] = df[dimensionsPair["label"]]
@@ -42,6 +24,14 @@ def codeListFromDimension(dimensionsPair, df):
     makeCypher(dimensionsPair, codes)
 
 
+def useSingleQuote(code, label):
+
+    if "'" not in code and "'" not in label:
+        return True
+    else:
+        return False
+
+
 # Creates the required cypher as a lists of cypher lines. Passes those lines to the cypherWriter
 def makeCypher(dimensionPair, codes):
     linesToWrite = []
@@ -53,16 +43,27 @@ def makeCypher(dimensionPair, codes):
         dimensionPair["label"]) + "', edition:'one-off' });")
 
     for code in codes:
-        linesToWrite.append(
-            "MERGE (node:`_code`:`_code_" + str(dimensionPair["code"]) + "` { value:'" + str(code["code"]) + "' });")
 
-        # Inconsistant use of ' and " within labels. Force all to quoting as ' else Neo issues
-        lab = str(code["label"]).replace("\"", "'").replace(".0", "")
+        # always use single quotes - unless they're in use in the code or label value
+        if useSingleQuote(code["code"], code["label"]):
 
-        linesToWrite.append(
-            "MATCH (parent:`_code_list`:`_code_list_" + str(dimensionPair["code"]) + "`),(node:`_code`" +
-            ":`_code_" + str(dimensionPair["code"]) + "` { value:'" + str(
-                code["code"]) + "' }) MERGE (node)-[:usedBy { label:\"" + lab + "\"}]->(parent);")
+            linesToWrite.append(
+                'MERGE (node:`_code`:`_code_' + str(dimensionPair["code"]) + '` { value:"' + str(code["code"]) + '" });')
+
+            linesToWrite.append(
+                'MATCH (parent:`_code_list`:`_code_list_' + str(dimensionPair["code"]) + '`),(node:`_code`' +
+                ':`_code_' + str(dimensionPair["code"]) + '` { value:"' +
+                str(code["code"]) + '" }) MERGE (node)-[:usedBy { label:"' + code["label"] + '"}]->(parent);')
+        else:
+
+            linesToWrite.append(
+                "MERGE (node:`_code`:`_code_" + str(dimensionPair["code"]) + "` { value:'" + str(code["code"]) + "' });")
+
+            linesToWrite.append(
+                "MATCH (parent:`_code_list`:`_code_list_" + str(dimensionPair["code"]) + "`),(node:`_code`" +
+                ":`_code_" + str(dimensionPair["code"]) + "` { value:'" +
+                str(code["code"]) + "' }) MERGE (node)-[:usedBy { label:'" + code["label"] + "'}]->(parent);")
+
 
     writeCypher(linesToWrite, dimensionPair)
 
@@ -115,21 +116,7 @@ def duplicates(df):
             f.writelines(hasNonSpecificCodes)
 
 
-# Wrapper function, uses all of the above
-"""
-has type issues - disabling for now
-def codelistsAsCypherFromV4(csv):
-
-    df = pd.read_csv(csv)
-
-    # creates a list of codesLabel dicts. i.e [{"label":"uk-only", "code":"K02000001"}, etc....]
-    dimensionsPairs = getCodeListNamesFromV4(df)
-
-    for dimensionPair in dimensionsPairs:
-        codeListFromDimension(dimensionPair, df)
-"""
-
 # Main function, uses all of the above
 # {"code": <CODE_COL_NAME>, "label": <LABEL_COL_NAME>}
 def codelistCypherFromDimension(df, dimensionPair):
-    codeListFromDimension(dimensionPair, df)
+    codeListFromDimension(df, dimensionPair)
