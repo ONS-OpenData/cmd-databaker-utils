@@ -1,27 +1,48 @@
 import pandas as pd
 
 
+# Validate the provded arguments
+def validate(df, dimensionPair):
+
+    # Validate input
+    if "code" not in dimensionPair:
+        raise ValueError("Aborting. Requires a dictionary with 'code' and 'label' keys as argument 2.")
+
+    if "label" not in dimensionPair:
+        raise ValueError("Aborting. Requires a dictionary with 'code' and 'label' keys as argument 2.")
+
+    if "edition" not in dimensionPair:
+        raise ValueError("Aborting. Requires a dictionary with 'code' and 'label' keys as argument 2.")
+
+    if type(df) != pd.DataFrame:
+        raise ValueError("Aborting. Requires a pandas dictionary as argument 1.")
+
+
 # passes the name of a codelist and a list of unique codes it contains to makeCypher function
-def codeListFromDimension(df, dimensionsPair):
+# dimensionPair example = {"code": <CODE_COL_NAME>, "label": <LABEL_COL_NAME>}
+def codelistCypherFromDimension(df, instructions):
+
+    validate(df, instructions)
+
     temp = pd.DataFrame()
-    temp[dimensionsPair["code"]] = df[dimensionsPair["code"]]
-    temp[dimensionsPair["label"]] = df[dimensionsPair["label"]]
+    temp[instructions["code"]] = df[instructions["code"]]
+    temp[instructions["label"]] = df[instructions["label"]]
     temp = temp.drop_duplicates()
 
-    allCodes = temp[dimensionsPair["code"]].unique()
-    allLabels = temp[dimensionsPair["label"]].unique()
+    allCodes = temp[instructions["code"]].unique()
+    allLabels = temp[instructions["label"]].unique()
 
     if len(allCodes) != len(allLabels):
         duplicates(temp)
         raise ValueError(
             "Aborting and generating info on code mismatches as nonSpecificDefinitions.txt, the number of unqiue codes is not equal to the number of unique labels for dimension: " +
-            dimensionsPair["code"])
+            instructions["code"])
 
     codes = []
     for i in range(0, len(allCodes)):
         codes.append({"code": allCodes[i], "label": allLabels[i]})
 
-    makeCypher(dimensionsPair, codes)
+    makeCypher(instructions, codes, instructions["edition"])
 
 
 def useSingleQuote(code, label):
@@ -33,14 +54,14 @@ def useSingleQuote(code, label):
 
 
 # Creates the required cypher as a lists of cypher lines. Passes those lines to the cypherWriter
-def makeCypher(dimensionPair, codes):
+def makeCypher(instructions, codes, edition):
     linesToWrite = []
 
     linesToWrite.append(
-        "CREATE CONSTRAINT ON (n:`_code_{c}`) ASSERT n.value IS UNIQUE;".format(c=str(dimensionPair["code"])))
+        "CREATE CONSTRAINT ON (n:`_code_{c}`) ASSERT n.value IS UNIQUE;".format(c=str(instructions["code"])))
 
-    linesToWrite.append("CREATE (node:`_code_list`:`_code_list_" + str(dimensionPair["code"]) + "` { label:'" + str(
-        dimensionPair["label"]) + "', edition:'one-off' });")
+    linesToWrite.append("CREATE (node:`_code_list`:`_code_list_" + str(instructions["code"]) + "` { label:'" + str(
+        instructions["label"]) + "'edition':'" + edition + "' });")
 
     for code in codes:
 
@@ -48,24 +69,24 @@ def makeCypher(dimensionPair, codes):
         if useSingleQuote(code["code"], code["label"]):
 
             linesToWrite.append(
-                'MERGE (node:`_code`:`_code_' + str(dimensionPair["code"]) + '` { value:"' + str(code["code"]) + '" });')
+                'MERGE (node:`_code`:`_code_' + str(instructions["code"]) + '` { value:"' + str(code["code"]) + '" });')
 
             linesToWrite.append(
-                'MATCH (parent:`_code_list`:`_code_list_' + str(dimensionPair["code"]) + '`),(node:`_code`' +
-                ':`_code_' + str(dimensionPair["code"]) + '` { value:"' +
+                'MATCH (parent:`_code_list`:`_code_list_' + str(instructions["code"]) + '`),(node:`_code`' +
+                ':`_code_' + str(instructions["code"]) + '` { value:"' +
                 str(code["code"]) + '" }) MERGE (node)-[:usedBy { label:"' + code["label"] + '"}]->(parent);')
         else:
 
             linesToWrite.append(
-                "MERGE (node:`_code`:`_code_" + str(dimensionPair["code"]) + "` { value:'" + str(code["code"]) + "' });")
+                "MERGE (node:`_code`:`_code_" + str(instructions["code"]) + "` { value:'" + str(code["code"]) + "' });")
 
             linesToWrite.append(
-                "MATCH (parent:`_code_list`:`_code_list_" + str(dimensionPair["code"]) + "`),(node:`_code`" +
-                ":`_code_" + str(dimensionPair["code"]) + "` { value:'" +
+                "MATCH (parent:`_code_list`:`_code_list_" + str(instructions["code"]) + "`),(node:`_code`" +
+                ":`_code_" + str(instructions["code"]) + "` { value:'" +
                 str(code["code"]) + "' }) MERGE (node)-[:usedBy { label:'" + code["label"] + "'}]->(parent);")
 
 
-    writeCypher(linesToWrite, dimensionPair)
+    writeCypher(linesToWrite, instructions)
 
 
 # Write the cypher for a codelist to a cypher file
@@ -101,13 +122,13 @@ def duplicates(df):
     for label in df[labelsCol].unique():
 
         tempDf = df.copy()
-        tempDf = tempDf[tempDf[labelsCol] == code]
+        tempDf = tempDf[tempDf[labelsCol] == label]
         if len(tempDf) > 1:
             for label in tempDf[codeCol]:
-                hasNonSpecificCodes.append(str(label) + " || " + str(code) + "\n")
+                hasNonSpecificLabels.append(str(label) + " || " + str(code) + "\n")
             hasNonSpecificCodes.append("\n")
 
-    with open("nonSpecificDefinitions.txt", "w") as f:
+    with open("nonSpecificDefinitions_{c}.txt".format(codeCol), "w") as f:
 
         if len(hasNonSpecificCodes) != 0:
             f.write("ERROR - the following codes are represented by more than one label\n")
@@ -115,8 +136,3 @@ def duplicates(df):
             f.write("------------------------------------------------------------------\n\n")
             f.writelines(hasNonSpecificCodes)
 
-
-# Main function, uses all of the above
-# {"code": <CODE_COL_NAME>, "label": <LABEL_COL_NAME>}
-def codelistCypherFromDimension(df, dimensionPair):
-    codeListFromDimension(df, dimensionPair)

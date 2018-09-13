@@ -7,35 +7,60 @@ into a CSV strutured to the ONS digital publishing v4 specification.
 We're going to drop old columns as we add new ones, to minimise memory footprint.
 """
 
+
+
+# Depreciated. Just wrapping newer function for backwards compatibility
 def v4Writer(OutputName, df, asFrame=False):
 
-    print('Extracting data structured as v4.')
+    obsData = ['Confidence Interval', 'CV', 'CDID']
 
-    obsLevelData = ['Confidence Interval', 'CV', 'CDID']
+    if not asFrame:
+        v4ToCSV(OutputName, df, obsData)
+    else:
+        return v4ToDataFrame(df, obsData)
 
-    # additional column count
-    addColCount = len([x for x in df.columns.values if x in obsLevelData])
+
+# Writes a v4 file to csv
+def v4ToCSV(OutputName, df, obsData=[]):
+
+    for old in obsData:
+        if old not in df.columns.values:
+            raise ValueError("Aborting. Column {c} specified as observation level data, but no such column present in dataset.".format(c=old))
+
+    v4 = v4ToDataFrame(df, obsData=obsData)
+    writeCSV(OutputName, v4)
+
+
+
+# Returns a dataframe in v4 structure
+def v4ToDataFrame(df, obsData=[]):
+
+    for old in obsData:
+        if old not in df.columns.values:
+            raise ValueError("Aborting. Column {c} specified as observation level data, but no such column present in dataset.".format(c=old))
+
+    # build our new dataframe
+    newDf = pd.DataFrame()
+
+    obsColCount = len(obsData)
 
     if "DATAMARKER" in df.columns.values:
-        hasDataMarker = True
-    else:
-        hasDataMarker = False
+        obsColCount += 1
 
-    # Lets build our new dataframe
-    newDf = pd.DataFrame()
-    newDf['V4_' + str(addColCount)] = df['OBS']
+    # build our new dataframe
+    newDf['V4_' + str(obsColCount)] = df['OBS']
     df = df.drop('OBS', axis=1)
 
-    if hasDataMarker:
+    if "DATAMARKER" in df.columns.values:
         newDf['Data_Marking'] = df['DATAMARKER']
         df = df.drop('DATAMARKER', axis=1)
 
-    # Add quality measures
-    # iterate and look for column headers to output prior to time
-    for qm in obsLevelData:
-        if qm in df.columns.values:
-            newDf[qm] = df[qm]
-            df = df.drop(qm, axis=1)
+    # Add columns of observation level data
+    # iterate and output prior to time
+    for obld in obsData:
+        if obld in df.columns.values:
+            newDf[obld] = df[obld]
+            df = df.drop(obld, axis=1)
 
     # time unit
     newDf['Time_codelist'] = df['TIMEUNIT']
@@ -54,10 +79,10 @@ def v4Writer(OutputName, df, asFrame=False):
         newDf[topic + '_codelist'] = ''
         newDf[topic] = df[topic]
 
-    # Optional return as dataframe, need keyword argument: asFrame=True
-    if asFrame:
         return newDf
 
-    newDf.to_csv(OutputName, encoding='utf-8', index=False)
+
+def writeCSV(OutputName, df):
+    df.to_csv(OutputName, encoding='utf-8', index=False)
     print('V4 file written as:' + OutputName)
 

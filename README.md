@@ -21,16 +21,16 @@ Depends on functionality. Listed below.
 
 ---
 
-## Utility - Create V4 files
+## 1. Utility - Create V4 files
 
 Used to output a databaker generated pandas dataframe to a v4 structured csv. 
 
-you -MUST- be using the ConversionSegment().topandas() functionality for this to work. And if conversionSegments is a list you need need to conctenate to a single dataframe first, i.e `conversionSegments = pd.concat([conversionSegments])`
+you -MUST- be using the ConversionSegment().topandas() functionality for this to work. And if conversionSegments is a list you MUST concatenate to a single dataframe first, i.e `conversionSegments = pd.concat([conversionSegments])`
 
 
 import with:
 
-`from databakerUtils.writers import v4Writer`
+`from databakerUtils.writers import v4ToDataFrame, v4ToCSV`
 
 
 then replace the line:
@@ -38,19 +38,28 @@ then replace the line:
 `writetechnicalCSV("Output.csv", conversionSegments)`
 
 
-with:
+with either:
 
-`v4Writer("Output.csv", conversionSegments)`
+`v4Writer("Output.csv", conversionSegments)` to write a v4 structured CSV.
+
+or
+
+`df = v4ToDataFrame(conversionSegments)` to return a v4 structured dataframe (df) for further processing.
 
 
-you can also use the asFrame keyword to write the v4 to a new dataframe if further processing is required).
+#### 1.1 Creating Observation Level Data
 
-`myNewDataFrame = v4Writer("Output.csv", conversionSegments, asFrame=True)`
+You can also specify dimensions to become observation level data (the additional columns denoted by the cumber in column A) by passing in an `obsData=` keyword list.
 
+Example using v4Writer - assuming you want "Measure" as an additional column.
+
+`v4Writer("Output.csv", conversionSegments, obsData=["Measure")`
+
+the `obsData=` keyword also works for v4ToDataFrame
 
 ---
 
-## Utility - Create Neo4J Graph Codelists from V4 files
+## 2. Utility - Create Neo4J Graph Codelists from V4 files
 
 Used to generate .cypher files for loading codelists into a Neo4J graph database.
 
@@ -65,7 +74,8 @@ use within a python script as follows.
 ```
 instructions = {
 "code":<NAME OF CODELIST COLUMN>,
-"label":<NAME OF LABEL COLUMN>
+"label":<NAME OF LABEL COLUMN>,
+"edition":<EDITION>
 }
 codelistCypherFromDimension(<DATAFRAME>, instructions)
 
@@ -74,7 +84,7 @@ codelistCypherFromDimension(<DATAFRAME>, instructions)
 
 ---
 
-## Utility - Codelist API
+## 3. Utility - Codelist API
 
 Some helper functions for working with codes and codelists that already exist on the api
 
