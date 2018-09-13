@@ -49,7 +49,7 @@ or
 
 #### 1.1 Creating Observation Level Data
 
-You can also specify dimensions to become observation level data (the additional columns denoted by the cumber in column A) by passing in an `obsData=` keyword list.
+You can also specify dimensions to become observation level data (the additional columns denoted by the number in column A) by passing in an `obsData=` keyword list.
 
 Example using v4Writer - assuming you want "Measure" as an additional column.
 
