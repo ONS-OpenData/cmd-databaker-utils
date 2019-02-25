@@ -5,6 +5,7 @@ Useful functions when creating a transform
 
 import requests
 import pandas as pd
+import numpy as np
 
 wholeDict = requests.get('https://api.beta.ons.gov.uk/v1/code-lists/admin-geography/editions/one-off/codes').json()
 adminDict = {}
