@@ -80,7 +80,7 @@ def getLabelLookup(url):
 def getCodeListDict(useDev):
 
     if useDev == True:
-        r = getResponse("https://api.dev.cmd.onsdigital.co.uk/v1/code-lists")
+        r = getResponse("https://api.cmd-dev.onsdigital.co.uk/v1/code-lists")
     else:
         r = getResponse("https://api.beta.ons.gov.uk/v1/code-lists")
 
