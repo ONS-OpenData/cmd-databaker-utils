@@ -2,7 +2,7 @@ from distutils.core import setup
 setup(
   name = 'databakerUtils',
   packages = ['databakerUtils'],
-  version = '0.1.27',
+  version = '0.1.28',
   description = 'Some additional utilities for using databaker within ONS digital publishing',
   author = 'Michael Adams',
   author_email = 'michael.adams@ons.gov.uk',
