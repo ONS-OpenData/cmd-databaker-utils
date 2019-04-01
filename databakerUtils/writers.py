@@ -11,7 +11,7 @@ def v4Writer(OutputName, df, asFrame=False):
 
     print('Extracting data structured as v4.')
 
-    obsLevelData = ['Confidence Interval', 'CV', 'CDID']
+    obsLevelData = ['Confidence Interval', 'CV', 'CDID', 'DATAMARKER']
 
     # additional column count
     addColCount = len([x for x in df.columns.values if x in obsLevelData])
