@@ -37,8 +37,8 @@ def v4Writer(OutputName, df, asFrame=False):
             newDf[qm] = df[qm]
             df = df.drop(qm, axis=1)
 
-    # time unit
-    newDf['Time_codelist'] = df['TIMEUNIT']
+    # time unit - no longer needed
+    newDf['Time_codelist'] = df['TIME']
     df = df.drop('TIMEUNIT', axis=1)
 
     # time
