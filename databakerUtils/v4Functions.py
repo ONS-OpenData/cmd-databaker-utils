@@ -228,17 +228,64 @@ def CodelistCheckFromURL(df, url):
                     print(label)
                     
                     
-def AllCodelistCheckFromURL(df):
+def ColumnsToIgnore(columnCodeList, columnsToIgnore):
     '''
-    uses CodelistCheckFromURL() to check all codelists in the v4 file against the api (cmd-dev)
+    Takes in columnCodeList (df.columns) and some columns to ignore/remove
+    Returns new list of columns
     '''
+    if type(columnsToIgnore) != list:
+        raise Exception('Columns that you are ignoring need to be in a list')
+    newColumns = []
+    for column in columnCodeList:
+        if column not in columnsToIgnore:
+            newColumns.append(column)
+    return newColumns
+
+
+def AllCodelistCheck(df, columnsToIgnore = None, useDev = True):
+    '''
+    uses CodelistCheckFromURL() to check all codelists in the v4 file against the api (cmd-dev or beta)
+    pass columnsToIgnore as a list of codelists to be ignored
+    pass useDev = False to check against beta api
+    useful if you know the code list already exists and you just want to check labels and codes
+    '''
+    if useDev == True:
+        devOrBeta = 'cmd-dev.onsdigital.co.uk'
+    else:
+        devOrBeta = 'beta.ons.gov.uk'
     v4marker = int(df.columns[0][-1])   #only interested in codelist columns
     columnList = list(df.columns)
     columnCodeList = columnList[v4marker + 1::2]
+    if columnsToIgnore != None:
+        columnCodeList = ColumnsToIgnore(columnCodeList, columnsToIgnore)
     for col in columnCodeList:
-        url = 'https://api.cmd-dev.onsdigital.co.uk/v1/code-lists/' + col + '/editions/one-off/codes'
+        url = 'https://api.' + devOrBeta + '/v1/code-lists/' + col + '/editions/one-off/codes'
         if requests.get(url).status_code != 200:
             raise Exception('{} does not appear to be in the api'.format(url.split('/')[5]))
         print('\t"{}"'.format(col))
         CodelistCheckFromURL(df, url)
+
+
+def ObsChecker(v4):
+    '''
+    Checks the observations column in a v4 
+    to make sure no data markings are left in the wrong column
+    returns nothing if all okay
+    '''
+    df = v4.copy()
+    obsColumn = df.columns[0]
+    df[obsColumn] = df[obsColumn].apply(v4Integers)
+    
+    missingDM = False
+    dataMarkings = []
+    for ob in df[obsColumn].unique():
+        try:
+            float(ob)
+        except ValueError as e:
+            dataMarkings.append(ob)
+            missingDM = True
+    if missingDM:
+        print('There are data markings in {}'.format(obsColumn))
+        print(dataMarkings)
+
     
