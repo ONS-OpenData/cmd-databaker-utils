@@ -27,7 +27,7 @@ def v4Writer(OutputName, df, asFrame=False):
     df = df.drop('OBS', axis=1)
 
     if hasDataMarker:
-        newDf['Data_Marking'] = df['DATAMARKER']
+        newDf['Data Marking'] = df['DATAMARKER']
         df = df.drop('DATAMARKER', axis=1)
 
     # Add quality measures
