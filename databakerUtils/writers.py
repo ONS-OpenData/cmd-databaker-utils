@@ -8,6 +8,9 @@ We're going to drop old columns as we add new ones, to minimise memory footprint
 """
 
 def v4Writer(OutputName, df, asFrame=False):
+    """
+    This is a test
+    """
 
     print('Extracting data structured as v4.')
 
