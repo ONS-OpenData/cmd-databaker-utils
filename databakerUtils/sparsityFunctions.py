@@ -41,7 +41,7 @@ def SparsityFiller(csv, DataMarker = '.'):
     #creating a new dataframe
     data = DataDict(columnCodeList, listsToFillDataDict)
     newDF = pd.DataFrame(data, columns = columnList)
-    newDF['Data_Marking'] = DataMarker
+    newDF['Data Marking'] = DataMarker
     
     #applying the dicts
     newDF = ApplyingTheDicts(newDF, dictsToSortLabels, columnCodeList, columnLabelList)
@@ -139,16 +139,16 @@ def ReorderingDF(newDF, df, v4marker):
     returns concated df
     '''
     originalDF = df.copy()
-    if 'Data_Marking' in originalDF.columns:
+    if 'Data Marking' in originalDF.columns:
         concatDF = pd.concat([originalDF, newDF])
     else:
-        originalDF['Data_Marking'] = ''
+        originalDF['Data Marking'] = ''
         concatDF = pd.concat([originalDF, newDF])
         concatDF = concatDF.rename(columns = {'V4_' + str(v4marker):'V4_' + str(v4marker + 1)})
     
     #reordering columns in case data markings in wrong place
-    if concatDF.columns[1] != 'Data_Marking':
-        newColsOrder = [concatDF.columns[0],'Data_Marking']
+    if concatDF.columns[1] != 'Data Marking':
+        newColsOrder = [concatDF.columns[0],'Data Marking']
         for col in concatDF.columns:
             if col not in newColsOrder:
                 newColsOrder.append(col)
