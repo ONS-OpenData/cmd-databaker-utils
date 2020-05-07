@@ -10,7 +10,7 @@ import numpy as np
 wholeDict = requests.get('https://api.beta.ons.gov.uk/v1/code-lists/admin-geography/editions/one-off/codes').json()
 adminDict = {}
 for item in wholeDict['items']:
-    adminDict.update({item['id']:item['label']})
+    adminDict.update({item['code']:item['label']})
 del wholeDict
     
 def AdminGeogLabelsFromCodes(value):
