@@ -10,7 +10,7 @@ def SparsityFiller(csv, DataMarker = '.'):
     
     currentTime = datetime.datetime.now()
     df = pd.read_csv(csv, dtype = str)
-    outputFile = csv[:-4] + '-without-sparsity.csv'
+    outputFile = csv
     
     #Make sure is a v4 file - first column is V4
     if not df.columns[0].startswith('V'):
