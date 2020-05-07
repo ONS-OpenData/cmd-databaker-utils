@@ -13,7 +13,7 @@ def SparsityFiller(csv, DataMarker = '.'):
     outputFile = csv
     
     #Make sure is a v4 file - first column is V4
-    if not df.columns[0].startswith('V'):
+    if not df.columns[0].lower().startswith('v'):
         raise Exception('Doesn\'t look like a V4 file')
     
     #first a quick check to see if dataset is actually sparse

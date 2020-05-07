@@ -15,7 +15,7 @@ del wholeDict
     
 def AdminGeogLabelsFromCodes(value):
     '''returns label of the admin geography when the code is passed'''
-    return adminDict(value)
+    return adminDict[value]
 
 
 def v4Integers(value):
