@@ -144,7 +144,11 @@ def ReorderingDF(newDF, df, v4marker):
     else:
         originalDF['Data Marking'] = ''
         concatDF = pd.concat([originalDF, newDF])
-        concatDF = concatDF.rename(columns = {'V4_' + str(v4marker):'V4_' + str(v4marker + 1)})
+        concatDF = concatDF.rename(columns = {
+                    'V4_' + str(v4marker):'V4_' + str(v4marker + 1),
+                    'v4_' + str(v4marker):'v4_' + str(v4marker + 1)
+                                             }
+                                  )
     
     #reordering columns in case data markings in wrong place
     if concatDF.columns[1] != 'Data Marking':
