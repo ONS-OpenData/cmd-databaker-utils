@@ -27,7 +27,7 @@ def SparsityFiller(csv, DataMarker = '.'):
         unsparseLength *= df[col].unique().size
     numberOfObs = df.index.size
     if unsparseLength == numberOfObs:
-        raise Exception('Dataset looks complete..')
+        return('Dataset looks complete..')
     
     #list of lists of unique values for each dimension
     uniqueListOfCodesInColumns = UniqueListOfCodesInColumns(df, columnCodeList)
