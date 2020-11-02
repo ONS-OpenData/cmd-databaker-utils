@@ -7,7 +7,7 @@ import requests
 import pandas as pd
 import numpy as np
 
-wholeDict = requests.get('https://api.beta.ons.gov.uk/v1/code-lists/admin-geography/editions/one-off/codes').json()
+wholeDict = requests.get('https://api.beta.ons.gov.uk/v1/code-lists/administrative-geography/editions/one-off/codes').json()
 adminDict = {}
 for item in wholeDict['items']:
     adminDict.update({item['code']:item['label']})
