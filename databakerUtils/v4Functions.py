@@ -109,7 +109,7 @@ def adminGeogCheck(v4, isCSV = False):
     if 'admin-geography' not in v4Columns or 'geography' not in v4Columns:
         raise ValueError('Admin geography not in this dataset')
         
-    url = 'https://api.beta.ons.gov.uk/v1/code-lists/admin-geography/editions/one-off/codes'
+    url = 'https://api.beta.ons.gov.uk/v1/code-lists/administrative-geography/editions/one-off/codes'
     r = requests.get(url)
     wholeDict = r.json()
     adminDict = {}
