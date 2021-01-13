@@ -7,11 +7,6 @@ import requests
 import pandas as pd
 import numpy as np
 
-    
-def AdminGeogLabelsFromCodes(value):
-    '''returns label of the admin geography when the code is passed'''
-    return adminDict[value]
-
 
 def v4Integers(value):
     '''
