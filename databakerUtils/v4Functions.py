@@ -7,16 +7,6 @@ import requests
 import pandas as pd
 import numpy as np
 
-wholeDict = requests.get('https://api.beta.ons.gov.uk/v1/code-lists/administrative-geography/editions/one-off/codes').json()
-adminDict = {}
-for item in wholeDict['items']:
-    adminDict.update({item['code']:item['label']})
-del wholeDict
-    
-def AdminGeogLabelsFromCodes(value):
-    '''returns label of the admin geography when the code is passed'''
-    return adminDict[value]
-
 
 def v4Integers(value):
     '''
