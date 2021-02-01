@@ -157,7 +157,7 @@ def CodelistCheckFromURL(df, url):
         raise Exception('url - "{}" is not returning a 200 response'.format(url))
     
     #find out label of the codelist
-    r = requests.get(url[:-14])
+    r = requests.get('/'.join(url.split('/')[:-2]))
     myDict = r.json()
     codelistLabelName = myDict['items'][0]['label']
     
@@ -168,16 +168,16 @@ def CodelistCheckFromURL(df, url):
     r = requests.get(url)
     wholeDict = r.json()
     myDict = {}
+    
     for item in wholeDict['items']:
-        myDict.update({item['code']:item['label']}) 
-        
-    if codelistLabelName not in df.columns or codelistName not in df.columns:
+            myDict.update({item['code']:item['label']}) 
+    
+    if codelistName not in df.columns:
         raise Exception('''
-                        Dataframe does not have columns that match this codelist
-                        codelist - {}
-                        label - {}
-                        '''.format(codelistName, codelistLabelName))
-     
+Dataframe does not have columns that match this codelist
+{}
+                        '''.format(codelistName))
+            
     #find missing codes
     missingCodes = []
     for code in df[codelistName].unique():
@@ -193,6 +193,8 @@ def CodelistCheckFromURL(df, url):
      
     #find missing labels
     missingLabels = []
+    codelistName_index = list(df.columns).index(codelistName)
+    codelistLabelName = list(df.columns)[codelistName_index + 1]
     for label in df[codelistLabelName].unique():
         if label not in myDict.values():
             missingLabels.append(label)
@@ -209,11 +211,11 @@ def CodelistCheckFromURL(df, url):
         showMissingValues = input('Would you like to see the incorrect codes/labels? [y/n]: ')
         if showMissingValues == 'y':
             if len(missingCodes) != 0:
-                print('Codes\n')
+                print('"Codes"\n')
                 for code in missingCodes:
                     print(code)
             if len(missingLabels) != 0:
-                print('Labels\n')
+                print('\n"Labels"\n')
                 for label in missingLabels:
                     print(label)
                     
