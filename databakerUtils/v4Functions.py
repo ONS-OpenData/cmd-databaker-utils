@@ -169,7 +169,7 @@ def CodelistCheckFromURL(df, url):
     wholeDict = r.json()
     myDict = {}
     for item in wholeDict['items']:
-        myDict.update({item['id']:item['label']}) 
+        myDict.update({item['code']:item['label']}) 
         
     if codelistLabelName not in df.columns or codelistName not in df.columns:
         raise Exception('''
@@ -232,7 +232,7 @@ def ColumnsToIgnore(columnCodeList, columnsToIgnore):
     return newColumns
 
 
-def AllCodelistCheck(df, columnsToIgnore = None, useDev = True):
+def AllCodelistCheck(df, columnsToIgnore=None, useDev=True):
     '''
     uses CodelistCheckFromURL() to check all codelists in the v4 file against the api (cmd-dev or beta)
     pass columnsToIgnore as a list of codelists to be ignored
