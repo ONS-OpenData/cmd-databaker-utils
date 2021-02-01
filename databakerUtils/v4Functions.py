@@ -239,8 +239,9 @@ def AllCodelistCheck(df, columnsToIgnore = None, useDev = True):
     pass useDev = False to check against beta api
     useful if you know the code list already exists and you just want to check labels and codes
     '''
+    ObsChecker(df)  #check observations for any incorrect
     if useDev == True:
-        devOrBeta = 'cmd-dev.onsdigital.co.uk'
+        devOrBeta = 'develop.onsdigital.co.uk'
     else:
         devOrBeta = 'beta.ons.gov.uk'
     v4marker = int(df.columns[0][-1])   #only interested in codelist columns
@@ -251,7 +252,8 @@ def AllCodelistCheck(df, columnsToIgnore = None, useDev = True):
     for col in columnCodeList:
         url = 'https://api.' + devOrBeta + '/v1/code-lists/' + col + '/editions/one-off/codes'
         if requests.get(url).status_code != 200:
-            raise Exception('{} does not appear to be in the api'.format(url.split('/')[5]))
+            print('{} does not appear to be in the api'.format(url.split('/')[5]))
+            continue
         print('\t"{}"'.format(col))
         CodelistCheckFromURL(df, url)
 
