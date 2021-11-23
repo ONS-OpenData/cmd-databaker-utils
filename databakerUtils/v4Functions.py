@@ -83,65 +83,7 @@ def sparsity(DataFrame, isCSV = False, showVars = False):
         possibleNumberOfObservations = np.prod(possibleNumberOfObservations)
         sparsityPercent = numberOfObservations/possibleNumberOfObservations * 100
         print("\nThe dataset is {:.2f}% complete according to codes".format(sparsityPercent))
-        
 
-def adminGeogCheck(v4, isCSV = False):
-    '''
-    Checks a v4 to find any codes/labels that do not match api
-    '''
-    
-    if isCSV == True:
-        df = pd.read_csv(v4)
-    else:
-        df = v4
-    
-    v4Columns = df.columns
-    if 'admin-geography' not in v4Columns or 'geography' not in v4Columns:
-        raise ValueError('Admin geography not in this dataset')
-        
-    url = 'https://api.beta.ons.gov.uk/v1/code-lists/administrative-geography/editions/one-off/codes'
-    r = requests.get(url)
-    wholeDict = r.json()
-    adminDict = {}
-    for item in wholeDict['items']:
-        adminDict.update({item['id']:item['label']})
-    del wholeDict
-    
-    incorrectCodes = []
-    for code in df['admin-geography'].unique():
-        if code not in adminDict.keys():
-            incorrectCodes.append(code)
-    
-    if len(incorrectCodes) == 0:
-        print('All codes match the API')
-    elif len(incorrectCodes) == 1:
-        print('1 code does not match the API')
-    else:
-        print('{} codes do not match the API'.format(len(incorrectCodes)))
-        
-    incorrectLabels = []
-    for code in df['geography'].unique():
-        if code not in adminDict.values():
-            incorrectLabels.append(code)
-            
-    if len(incorrectLabels) == 0:
-        print('All labels match the API')
-    elif len(incorrectLabels) == 1:
-        print('1 label does not match the API')
-    else:
-        print('{} labels do not match the API'.format(len(incorrectLabels)))
-        
-    if len(incorrectCodes) != 0 or len(incorrectLabels) != 0:
-        showMissingValues = input('Would you like to see the incorrect geography\'s? [y/n]: ')
-        if showMissingValues == 'y':
-            if len(incorrectCodes) != 0:
-                print('Codes\n')
-                for code in incorrectCodes:
-                    print(code)
-            if len(incorrectLabels) != 0:
-                print('Labels\n')
-                for label in incorrectLabels:
-                    print(label)
         
     
 def CodelistCheckFromURL(df, url):   
